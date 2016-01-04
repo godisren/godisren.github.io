@@ -3,6 +3,9 @@ body{
 	margin-top: 20px;
 	background-image:url('../images/bg_html.jpg');	
 }
+h2{
+	margin-bottom:20px;
+}
 .wrap{
 	width:900px;
 	margin:0px auto;
@@ -15,7 +18,8 @@ body{
 }			
 .text_input{
 	padding: 10px;
-	border-color:rgba(242, 242, 242,.5)
+	border-color:rgba(242, 242, 242,.5);
+	margin-bottom: 20px;
 }
 .header {
 	position: relative;
@@ -93,7 +97,7 @@ body{
 	width: 65%;
 	float: left;
 	overflow: hidden;
-	padding:20px;
+	padding-right:30px;	
 }
 .events .product_image{
 	float: left;
@@ -111,6 +115,11 @@ body{
 	list-style-image: url('../images/icon_03.png');
 	padding-left: 15px;
 }
+
+.service{
+	margin-bottom:30px;	
+}
+
 .footer{
 	text-align:center;
 	line-height: 30px;
