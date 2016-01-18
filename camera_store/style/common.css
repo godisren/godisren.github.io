@@ -1,178 +1,115 @@
+
 body{
-	margin: 0;
-	margin-top: 20px;
-	background-image:url('../images/bg_html.jpg');	
+	background-image: url(../images/background.png);
 }
-h2{
-	margin-bottom:20px;
+
+div{
+	/*border: 1px solid;*/
 }
-.wrap{
-	width:900px;
-	margin:0px auto;
-	font-family: Arial, Helvetica, sans-serif;
-}
-.bg_white { 
-	background-color:white;
-	/*margin:20px 0px 20px 0px;*/
-	padding:20px;
-}			
-.text_input{
-	padding: 10px;
-	border-color:rgba(242, 242, 242,.5);
-	margin-bottom: 20px;
-}
-.header {
-	position: relative;
-	width:100%;
-	overflow: hidden;
-	/*padding:20px 10px 20px 10px;*/
-	margin-bottom:20px;
-}
-.logo{
-	width: *;
-	float: left;
-}
-.share{
-	position:absolute;
-	right:10px;
-	top:20px;
-}
-.menu{
-	position:absolute;
-	right:0px;
-	bottom:0px;
-}
-.menu ul {
+
+ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
     overflow: hidden;
 } 
+li {
+    display: inline;
+} 
+li.last-li{
+	float:right;
+	padding-right:0;	
+}
+.hightlight{
+	color:#98b827;
+}
+
+.wrap{
+	margin:0px auto;
+	width: 1024px;
+}
+.topbar{
+	height: 30px;
+	line-height: 30px;
+	background-color: white;
+}
+.config{
+	float:left;
+	
+}
+.config li{
+	margin-right: 30px;
+	color:#a0a0a0;
+}
+.config select{
+	border: 0;
+	color:#98b827;
+}
+.user_profile li{
+	margin-left: 10px;
+	color:#a0a0a0;
+}
+.user_profile{
+	float:right;
+}
+.header{
+	position: relative;
+	height: 150px;
+	line-height: 150px;
+}
+.logo{
+	float:left;
+	vertical-align: middle;
+}
+.logo img{
+	vertical-align: middle;
+}
+.social{
+	float:right;
+}
+.social input{
+	height: 20px;
+}
+.menu{
+	clear:both;
+}
 .menu li {
     float: left;
-    padding-left: 40px;
-}
-.commercial{
-	overflow: hidden;
-	margin-bottom:20px;
-}
-.banner{
-	float: left;
-	overflow: hidden;
-}
-.introduction{
-	float: right;
-	padding:20px;
-	background-color: #292929;
-	width: 220px;
-	height: 375px;
-}
-.introduction .title{
-	color: #01A5CA;
-	font-size: 35px;
-	display:block;
-	padding:0px;								
-	margin:0px;
-	margin-bottom:20px;
-}
-.introduction .detail{
-	color: #717171;
-	line-height: 30px;
+    padding-right: 30px;
 }
 
-.welcome{
-	line-height: 30px;
-	margin-bottom:20px;
+.banner img{
+	width:100%;
+}
+.info_more{
+
+}
+.prod_list{
+	position: relative;
 }
 
-.import_text{
-	color:#01A5CA;
-}
-.content{
-	overflow: auto;
-	line-height: 30px;
-	margin-bottom:20px;
-}
-.events{
-	width: 65%;
-	float: left;
-	overflow: hidden;
-	padding-right:30px;	
-}
-.events .product_image{
-	float: left;
-	overflow: hidden;
-	padding-right:20px;
-}
-.event{
-	margin-bottom:30px;
+.product_card{
+	width:25%;	
+	float : left;
 }
 
-.infomation{
-	float: left;
+.product_card img{
+	width:100%;	
 }
-.infomation ul{
-	list-style-image: url('../images/icon_03.png');
-	padding-left: 15px;
+.description {
+	border-top: 1px solid;
+	border-bottom: 1px solid;
 }
-
-.service{
-	margin-bottom:30px;	
+.brand{
+	clear:both;
+	margin-bottom: 20px;
 }
-
-.footer{
-	text-align:center;
-	line-height: 30px;
+.brand img{
+	width:18%;
+	border:1px solid;
+	padding: 0;
 }
-
-h2{
-	font-size: 2em;
-}
-
-a { 
-	color: inherit; 
-} 
-a:link {
-    text-decoration: none;
-}
-a:visited {
-    text-decoration: none;
-}
-a:hover {
-    text-decoration: underline;
-}
-a:active {
-    text-decoration: underline;
-}
-a.focus{
-	color:#01A5CA;
-}
-
-.btn1{
-	font-family: inherit;
-	background-color:#3F3F3F;
-	color: white;
-	border:none;
-	padding: 10px 20px 10px 20px;
-	
-}
-.btn1:hover{
-    background-color: yellow;
-}
-.btn1:active {
-    background-color: red;
-}
-
-.btn2{
-	color:#01A5CA;
-	padding: 10px 30px 10px 30px;
-	border:none;
-	font-weight: bold;
-	
-}
-.btn2:hover{
-    background-color: yellow;
-}
-.btn2:active {
-    background-color: red;
+.footer div{
+	float:left;
+	width:25%;
 }
