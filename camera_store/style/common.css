@@ -286,16 +286,13 @@ a.focus{
 	padding: 10px;	
 }
 .brand{
-	clear:both;
-	margin-bottom: 20px;
-	
+	clear:both;	
 }
 
 .brand .brand-icon{
 	background-color: white;
-	margin: 0;
-	padding: 0;	
 	float:left;
+	margin-bottom: 40px;
 }
 
 .brand img{
