@@ -4,17 +4,17 @@
 		<title>
 			fitness
 		</title>
-
-		<meta property="og:title" content="fitness_club"/>
-		<meta property="og:description" content="fitness test">
+		<meta charset="UTF-8">
+		<meta property="og:title" content="camera store"/>
+		<meta property="og:description" content="camera on sale, professional camera">
 		<meta property="og:type" content="website"/>
-		<meta property="og:url" content="http://godisren.github.io/fitness_club2/"/>
-		<meta property="og:image" content="http://godisren.github.io/fitness_club2/images/logo.png"/>
+		<meta property="og:url" content="http://godisren.github.io/camera_store/"/>
+		<meta property="og:image" content="http://godisren.github.io/camera_store/images/logo.png"/>
 		<link rel="shortcut icon" href="favicon.ico">
 		<link href="favicon.ico" rel="apple-touch-icon" />
 		<meta name="viewport" content="width=device-width, initial-scale=1"/>
-		<meta name='description' content='瘦身聚樂部，讓你三天瘦1公斤' />
-		<meta name='keywords' content='減重、瘦身、窈窕' />
+		<meta name='description' content='camera on sale, professional camera' />
+		<meta name='keywords' content='camera, canon, nikon' />
 		
 		<link rel="stylesheet" type="text/css" href="style/reset.css">
 		<link rel="stylesheet" type="text/css" href="style/common.css">
@@ -23,8 +23,8 @@
 		<script src="js/all.js"></script>
 	</head>
 	<body>
-		<div class="wrap">
-			<div class="topbar">
+		<div class="topbar">
+			<div class="wrap">
 				<div class="config">
 					<ul>
 						<li>Language:
@@ -48,17 +48,19 @@
 				</div>
 				<div class="user_profile">						 
 					<ul>
-						<li>My Account</li>
+						<li><a href="javascript:void(0);">My Account</a></li>
 						<li>|</li>
-						<li>Login</li>
+						<li><a href="javascript:void(0);">Login</a></li>
 						<li>|</li>
-						<li>Register</li>
+						<li><a href="javascript:void(0);">Register</a></li>
 						<li>|</li>
-						<li>Checkout</li>
+						<li><a href="javascript:void(0);">Checkout</a></li>
+					</ul>
 				</div>
 			</div>
-			<div class="header">			
-				
+		</div>
+		<div class="wrap">
+			<div class="header">
 				<div class="logo">
 					<a href="javascript:void(0);" autofocus><img src="images/logo.png"></img></a>
 				</div>				
@@ -68,15 +70,16 @@
 							<input type="text" placeholder="Search...">
 							<a href="javascript:void(0);"><img src="images/search.png"></img></a>
 						</li>
-						<li><a href="javascript:void(0);"><img src="images/social_rss.png"></img></a><li>
-						<li><a href="javascript:void(0);"><img src="images/social_pinterest.png"></img></a><li>
-						<li><a href="javascript:void(0);"><img src="images/social_facebook.png"></img></a><li>
-						<li><a href="javascript:void(0);"><img src="images/social_twitter.png"></img></a><li>
-						<li><a href="javascript:void(0);"><img src="images/social_dribble.png"></img></a><li>
+						<li><a href="javascript:void(0);"><img src="images/social_rss.png"></img></a></li>
+						<li><a href="javascript:void(0);"><img src="images/social_pinterest.png"></img></a></li>
+						<li><a href="javascript:void(0);"><img src="images/social_facebook.png"></img></a></li>
+						<li><a href="javascript:void(0);"><img src="images/social_twitter.png"></img></a></li>
+						<li><a href="javascript:void(0);"><img src="images/social_dribble.png"></img></a></li>
 					</ul>
 				</div>											
 			</div>		
 			<div class="menu">
+				<div class="separator"></div>
 				<ul>
 					<li><a href="javascript:void(0);" class="hightlight">HOME</a></li>
 					<li><a href="javascript:void(0);">APPAREL</a></li>
@@ -84,10 +87,10 @@
 					<li><a href="javascript:void(0);">NEWS</a></li>
 					<li><a href="javascript:void(0);">PORTFOLIO</a></li>
 					<li><a href="javascript:void(0);">CONTACT US</a></li>
-					<li class="last-li">
-						<input type="button" class="cart" value="(0)ITEMS">
-					</li>
 				</ul>
+
+				<input type="button" class="cart" value="(0)ITEMS">
+				<div class="separator"></div>
 			</div>
 			
 			<div class="banner">
@@ -95,14 +98,19 @@
 			</div>
 
 			<div class="info_more">
-				<ul>
-					<li><h1 class="slogen">CHECK OUR <b>AMAZING OFFERS</b>, VISIT OUR <b>STORE</b> NOW</h1></li>
-					<li class="last-li"><input class="btn1" type="button" value="VISIT THE STORE"></li>
-				</ul>
+				<h1 class="slogan">CHECK OUR <b>AMAZING OFFERS</b>, VISIT OUR <b>STORE</b> NOW</h1>
+				<input class="btn1" type="button" value="VISIT THE STORE">
 			</div>
 						
 			<div class="prod_list">				
-				<h3>RECENT PRODUCTS</h3>
+				<div class="title">
+					<h3>RECENT PRODUCTS</h3>					
+					<div class="pager">
+						<button class="left_arrow"></button>
+						<button class="right_arrow"></button>	
+					</div>					
+				</div>
+				
 				<div class="product_card"> 
 					<img src="images/sell-item-01.png">
 					<div class="choice" >
@@ -162,9 +170,15 @@
 			</div>
 
 			<div class="prod_list">				
-				<h3>RECENT PRODUCTS</h3>
+				<div class="title">
+					<h3>RECENT PRODUCTS</h3>					
+					<div class="pager">
+						<button class="left_arrow"></button>
+						<button class="right_arrow"></button>	
+					</div>	
+				</div>
 				<div class="product_card"> 
-					<img src="images/sell-item-01.png">
+					<img src="images/sell-item-05.png">
 					<div class="choice" >
 						<span class="price">$899.99</span>
 						<input type="button" class="btn2" value="ADD TO CART">
@@ -178,7 +192,7 @@
 					</div>
 				</div>
 				<div class="product_card"> 
-					<img src="images/sell-item-01.png">
+					<img src="images/sell-item-06.png">
 					<div class="choice" >
 						<span class="price">$899.99</span>
 						<input type="button" class="btn2" value="ADD TO CART">
@@ -192,7 +206,7 @@
 					</div>
 				</div>
 				<div class="product_card"> 
-					<img src="images/sell-item-01.png">
+					<img src="images/sell-item-07.png">
 					<div class="choice" >
 						<span class="price">$899.99</span>
 						<input type="button" class="btn2" value="ADD TO CART">
@@ -206,7 +220,7 @@
 					</div>
 				</div>
 				<div class="product_card"> 
-					<img src="images/sell-item-01.png">
+					<img src="images/sell-item-08.png">
 					<div class="choice" >
 						<span class="price">$899.99</span>
 						<input type="button" class="btn2" value="ADD TO CART">
@@ -222,40 +236,86 @@
 			</div>
 
 			<div class="brand">
-				<h3>CHECK OUR BRANDS</h3>
-					<div>
-					<a href="javascript:void(0);"><img src="images/brands-01.jpg"></a>
-					<a href="javascript:void(0);"><img src="images/brands-02.jpg"></a>
-					<a href="javascript:void(0);"><img src="images/brands-03.jpg"></a>
-					<a href="javascript:void(0);"><img src="images/brands-04.jpg"></a>
-					<a href="javascript:void(0);"><img src="images/brands-05.jpg"></a>
-					</div>
+				<div class="title">
+					<h3>CHECK OUR BRANDS</h3>
+				</div>
+				<div class="brand-icon">
+					<ul>
+						<li><a href="javascript:void(0);"><img src="images/brands-01.jpg"></a></li>
+						<li><a href="javascript:void(0);"><img src="images/brands-02.jpg"></a></li>
+						<li><a href="javascript:void(0);"><img src="images/brands-03.jpg"></a></li>
+						<li><a href="javascript:void(0);"><img src="images/brands-04.jpg"></a></li>
+						<li><a href="javascript:void(0);"><img src="images/brands-05.jpg"></a></li>
+					</ul>					
+				</div>
 			</div>
 		</div>
 		<div class="footer">
-			<div class="footer_info">
+			<div class="wrap">
 				<div class="follow_us">
 					<img class="small_log" src="images/lower-logo.png">
-					<h4>Follow us</h4>
+					<h3>Follow us</h3>
 					<a href="javascript:void(0);"><img src="images/social_rss.png"></img></a>
 					<a href="javascript:void(0);"><img src="images/social_pinterest.png"></img></a>
 					<a href="javascript:void(0);"><img src="images/social_facebook.png"></img></a>
 					<a href="javascript:void(0);"><img src="images/social_twitter.png"></img></a>
 					<a href="javascript:void(0);"><img src="images/social_dribble.png"></img></a>
 				</div>	
-				<div>
-					<h4>Recent Posts</h4>
+				<div class="recent_post">
+					<h3>Recent Posts</h3>
+					
+					<div class="post">
+						<img src="images/recent-post1.png"></img>
+						<p>New Camera Set<br>posted by <span class="hightlight">Admin</span></p>
+					</div>
+					<div class="post">
+						<img src="images/recent-post2.png"></img>
+						<p>Special Camera Lenses<br>posted by <span class="hightlight">Gljivec</span></p>
+					</div>
+					
 				</div>			
-				<div>
-					<h4>Contacts</h4>					
+				<div class="contact">
+					<h3>Contacts</h3>					
+					<p>
+						1000 Ljubljana<br>
+						Celovska cesta 135<br>
+						Country Slovenia<br>
+						<br>
+						Phone: (+386) 40 123 456<br>
+						Moblie: (+386) 40 654 123<br>
+						<br>
+						info@premiumcoding.com<br>
+					</p>
 				</div>			
-				<div>
-					<h4>What People say</h4>					
+				<div class="people_say">
+					<h3>What People say</h3>
+					<div class="people">
+						<img src="images/p2.png"></img>
+						<p class="name">ANNA</p>
+						<div>
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer orci
+						</div>
+					</div>
+					<div class="people">
+						<img src="images/p1.png"></img>
+						<p class="name">ERICA</p>
+						<div>
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer orci
+						</div>
+					</div>
 				</div>			
+			</div>			
+		</div>	
+		<div class="bottom_bar">
+			<div class="wrap">
+				<ul>
+					<li><a href="javascript:(0)">HOME</a></li>
+					<li><a href="javascript:(0)">PORTFOLIO</a></li>
+					<li><a href="javascript:(0)">SITEMAP</a></li>
+					<li><a href="javascript:(0)">CONTACT</a></li>
+				</ul>
+				<p>CameraStore @2013 by PremiumCoding | All Rights Reserved </p>
 			</div>
-			<div class="bottom_bar" style="clear:both">
-				HOME PORTFOLIO SITEMAP CONTACT
-			</div>
-		</div>
+		</div>	
 	</body>
 </html>
