@@ -288,18 +288,24 @@ a.focus{
 }
 .brand{
 	clear:both;	
-}
-
-.brand .brand-icon{
-	background-color: white;
-	float:left;
 	margin-bottom: 40px;
 }
 
-.brand img{
-	width:19%;
-	border: 1px solid #c4c4c4;
+.brand-icon ul{
+	list-style: none;
+	margin-left: 2px;
+	padding:0;	
 }
+.brand-icon li{
+	display:block;
+	float:left;
+	width:202px;
+	text-align: center;
+	border: 1px solid #c4c4c4;
+	background-color: white;
+	padding:10px 0;
+}
+
 .footer{
 	clear: both;
 	position: relative;	
@@ -318,14 +324,14 @@ a.focus{
 }
 .follow_us{
 	float:left;
-	width:25%;
+	width:22%;
 }
 .follow_us a img{
 	width: 35px;
 }
 .recent_post{
 	float:left;
-	width:25%;
+	width:28%;
 }
 
 .post{
@@ -345,7 +351,7 @@ a.focus{
 	padding-left: 20px;
 	padding-top: 10px;
 	height: 46px;
-	width: 160px;
+	width: 180px;
 	line-height: 20px;
 	border-radius: 5px;
 	display: inline-block;
