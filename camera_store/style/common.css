@@ -129,7 +129,15 @@ a.focus{
 .logo{
 	position: absolute;
 	left: 0;
-	vertical-align: middle;
+	height:100%;
+	display: inline;
+}
+.logo a{
+	background:url("../images/logo.png") no-repeat;
+	width: 330px;
+	height:60px;
+	display: block;
+	margin:45px 0;
 }
 .logo img{
 	vertical-align: middle;
