@@ -17,11 +17,14 @@
 		<meta name='keywords' content='camera, canon, nikon' />
 		
 		<link rel="stylesheet" type="text/css" href="style/reset.css">
-		<link rel="stylesheet" type="text/css" href="style/common.css">
 		<link rel="stylesheet" type="text/css" href="style/scroll_top.css">		
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.3.1/css/swiper.css">
+		<link rel="stylesheet" type="text/css" href="style/common.css">
+		
 
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-		<script src="js/all.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.3.1/js/swiper.min.js"></script>
+		<script src="js/all.js"></script>				
 	</head>
 	<body>
 		<a href="#" class="scrollToTop"></a>
@@ -95,85 +98,93 @@
 				<div class="separator"></div>
 			</div>
 			
-			<div class="banner">
-				<img src="images/banner.png">
+			<div class="banner swiper-container">
+				<div class="swiper-wrapper">
+			        <!-- Slides -->
+			        <div class="swiper-slide"><img src="images/banner.png"></div>
+			        <div class="swiper-slide"><img src="images/banner.png"></div>
+			        <div class="swiper-slide"><img src="images/banner.png"></div>
+			        ...
+			    </div>
 			</div>
-
 			<div class="info_more">
 				<h1 class="slogan">CHECK OUR <b>AMAZING OFFERS</b>, VISIT OUR <b>STORE</b> NOW</h1>
 				<input class="btn1" type="button" value="VISIT THE STORE">
 			</div>
 						
-			<div class="prod_list">				
+			<div class="prod_list swiper-container">				
 				<div class="title">
 					<h3>RECENT PRODUCTS</h3>					
 					<div class="pager">
 						<button class="left_arrow"></button>
 						<button class="right_arrow"></button>	
 					</div>					
-				</div>
-				
-				<div class="product_card"> 
-					<img class="onsale" src="images/onsale.png"></img>
-					<img src="images/sell-item-01.png">
-					<div class="choice" >
-						<span class="price">$899.99</span>
-						<input type="button" class="btn2" value="ADD TO CART">
-					</div>
-					<div class="description">
-						<h3>EOS 450D Camera</h3>
-						<p>Lorem ipsum dolor sit amet, conse adipiscing elit, sed diam nonu mrny mod tincidunt ut lao dolore</p>
-					</div>
-					<div class="view_prod">
-						<a class="hightlight" href="javascript:void(0)">View the Product ></a>
-					</div>
-				</div>
-				<div class="product_card"> 
-					<img src="images/sell-item-02.png">
-					<div class="choice" >
-						<span class="price">$899.99</span>
-						<input type="button" class="btn2" value="ADD TO CART">
-					</div>
-					<div class="description">
-						<h3>EOS 450D Camera</h3>
-						<p>Lorem ipsum dolor sit amet, conse adipiscing elit, sed diam nonu mrny mod tincidunt ut lao dolore</p>
-					</div>
-					<div class="view_prod">
-						<a class="hightlight" href="javascript:void(0)">View the Product></a>
-					</div>
-				</div>
-				<div class="product_card"> 
-					<img class="onsale" src="images/onsale.png"></img>
-					<img src="images/sell-item-03.png">
-					<div class="choice" >
-						<span class="price">$899.99</span>
-						<input type="button" class="btn2" value="ADD TO CART">
-					</div>
-					<div class="description">
-						<h3>EOS 450D Camera</h3>
-						<p>Lorem ipsum dolor sit amet, conse adipiscing elit, sed diam nonu mrny mod tincidunt ut lao dolore</p>
-					</div>
-					<div class="view_prod">
-						<a class="hightlight" href="javascript:void(0)">View the Product></a>
-					</div>
-				</div>
-				<div class="product_card"> 
-					<img src="images/sell-item-04.png">
-					<div class="choice" >
-						<span class="price">$899.99</span>
-						<input type="button" class="btn2" value="ADD TO CART">
-					</div>
-					<div class="description">
-						<h3>EOS 450D Camera</h3>
-						<p>Lorem ipsum dolor sit amet, conse adipiscing elit, sed diam nonu mrny mod tincidunt ut lao dolore</p>
-					</div>
-					<div class="view_prod">
-						<a class="hightlight" href="javascript:void(0)">View the Product></a>
+				</div>				
+				<div class="swiper-wrapper">
+					<div class="swiper-slide">				
+						<div class="product_card"> 
+							<img class="onsale" src="images/onsale.png"></img>
+							<img src="images/sell-item-01.png">
+							<div class="choice" >
+								<span class="price">$899.99</span>
+								<input type="button" class="btn2" value="ADD TO CART">
+							</div>
+							<div class="description">
+								<h3>EOS 450D Camera</h3>
+								<p>Lorem ipsum dolor sit amet, conse adipiscing elit, sed diam nonu mrny mod tincidunt ut lao dolore</p>
+							</div>
+							<div class="view_prod">
+								<a class="hightlight" href="javascript:void(0)">View the Product ></a>
+							</div>
+						</div>
+						<div class="product_card"> 
+							<img src="images/sell-item-02.png">
+							<div class="choice" >
+								<span class="price">$899.99</span>
+								<input type="button" class="btn2" value="ADD TO CART">
+							</div>
+							<div class="description">
+								<h3>EOS 450D Camera</h3>
+								<p>Lorem ipsum dolor sit amet, conse adipiscing elit, sed diam nonu mrny mod tincidunt ut lao dolore</p>
+							</div>
+							<div class="view_prod">
+								<a class="hightlight" href="javascript:void(0)">View the Product></a>
+							</div>
+						</div>
+						<div class="product_card"> 
+							<img class="onsale" src="images/onsale.png"></img>
+							<img src="images/sell-item-03.png">
+							<div class="choice" >
+								<span class="price">$899.99</span>
+								<input type="button" class="btn2" value="ADD TO CART">
+							</div>
+							<div class="description">
+								<h3>EOS 450D Camera</h3>
+								<p>Lorem ipsum dolor sit amet, conse adipiscing elit, sed diam nonu mrny mod tincidunt ut lao dolore</p>
+							</div>
+							<div class="view_prod">
+								<a class="hightlight" href="javascript:void(0)">View the Product></a>
+							</div>
+						</div>
+						<div class="product_card"> 
+							<img src="images/sell-item-04.png">
+							<div class="choice" >
+								<span class="price">$899.99</span>
+								<input type="button" class="btn2" value="ADD TO CART">
+							</div>
+							<div class="description">
+								<h3>EOS 450D Camera</h3>
+								<p>Lorem ipsum dolor sit amet, conse adipiscing elit, sed diam nonu mrny mod tincidunt ut lao dolore</p>
+							</div>
+							<div class="view_prod">
+								<a class="hightlight" href="javascript:void(0)">View the Product></a>
+							</div>
+						</div>				
 					</div>
 				</div>
 			</div>
 
-			<div class="prod_list">				
+			<div class="prod_list swiper-container">				
 				<div class="title">
 					<h3>RECENT PRODUCTS</h3>					
 					<div class="pager">
@@ -181,61 +192,65 @@
 						<button class="right_arrow"></button>	
 					</div>	
 				</div>
-				<div class="product_card"> 
-					<img src="images/sell-item-05.png">
-					<div class="choice" >
-						<span class="price">$899.99</span>
-						<input type="button" class="btn2" value="ADD TO CART">
-					</div>
-					<div class="description">
-						<h3>EOS 450D Camera</h3>
-						<p>Lorem ipsum dolor sit amet, conse adipiscing elit, sed diam nonu mrny mod tincidunt ut lao dolore</p>
-					</div>
-					<div class="view_prod">
-						<a class="hightlight" href="javascript:void(0)">View the Product></a>
-					</div>
-				</div>
-				<div class="product_card"> 
-					<img src="images/sell-item-06.png">
-					<div class="choice" >
-						<span class="price">$899.99</span>
-						<input type="button" class="btn2" value="ADD TO CART">
-					</div>
-					<div class="description">
-						<h3>EOS 450D Camera</h3>
-						<p>Lorem ipsum dolor sit amet, conse adipiscing elit, sed diam nonu mrny mod tincidunt ut lao dolore</p>
-					</div>
-					<div class="view_prod">
-						<a class="hightlight" href="javascript:void(0)">View the Product></a>
-					</div>
-				</div>
-				<div class="product_card"> 
-					<img class="onsale" src="images/onsale.png"></img>
-					<img src="images/sell-item-07.png">
-					<div class="choice" >
-						<span class="price">$899.99</span>
-						<input type="button" class="btn2" value="ADD TO CART">
-					</div>
-					<div class="description">
-						<h3>EOS 450D Camera</h3>
-						<p>Lorem ipsum dolor sit amet, conse adipiscing elit, sed diam nonu mrny mod tincidunt ut lao dolore</p>
-					</div>
-					<div class="view_prod">
-						<a class="hightlight" href="javascript:void(0)">View the Product></a>
-					</div>
-				</div>
-				<div class="product_card"> 
-					<img src="images/sell-item-08.png">
-					<div class="choice" >
-						<span class="price">$899.99</span>
-						<input type="button" class="btn2" value="ADD TO CART">
-					</div>
-					<div class="description">
-						<h3>EOS 450D Camera</h3>
-						<p>Lorem ipsum dolor sit amet, conse adipiscing elit, sed diam nonu mrny mod tincidunt ut lao dolore</p>
-					</div>
-					<div class="view_prod">
-						<a class="hightlight" href="javascript:void(0)">View the Product></a>
+				<div class="swiper-wrapper">
+					<div class="swiper-slide">
+						<div class="product_card"> 
+							<img src="images/sell-item-05.png">
+							<div class="choice" >
+								<span class="price">$899.99</span>
+								<input type="button" class="btn2" value="ADD TO CART">
+							</div>
+							<div class="description">
+								<h3>EOS 450D Camera</h3>
+								<p>Lorem ipsum dolor sit amet, conse adipiscing elit, sed diam nonu mrny mod tincidunt ut lao dolore</p>
+							</div>
+							<div class="view_prod">
+								<a class="hightlight" href="javascript:void(0)">View the Product></a>
+							</div>
+						</div>
+						<div class="product_card"> 
+							<img src="images/sell-item-06.png">
+							<div class="choice" >
+								<span class="price">$899.99</span>
+								<input type="button" class="btn2" value="ADD TO CART">
+							</div>
+							<div class="description">
+								<h3>EOS 450D Camera</h3>
+								<p>Lorem ipsum dolor sit amet, conse adipiscing elit, sed diam nonu mrny mod tincidunt ut lao dolore</p>
+							</div>
+							<div class="view_prod">
+								<a class="hightlight" href="javascript:void(0)">View the Product></a>
+							</div>
+						</div>
+						<div class="product_card"> 
+							<img class="onsale" src="images/onsale.png"></img>
+							<img src="images/sell-item-07.png">
+							<div class="choice" >
+								<span class="price">$899.99</span>
+								<input type="button" class="btn2" value="ADD TO CART">
+							</div>
+							<div class="description">
+								<h3>EOS 450D Camera</h3>
+								<p>Lorem ipsum dolor sit amet, conse adipiscing elit, sed diam nonu mrny mod tincidunt ut lao dolore</p>
+							</div>
+							<div class="view_prod">
+								<a class="hightlight" href="javascript:void(0)">View the Product></a>
+							</div>
+						</div>
+						<div class="product_card"> 
+							<img src="images/sell-item-08.png">
+							<div class="choice" >
+								<span class="price">$899.99</span>
+								<input type="button" class="btn2" value="ADD TO CART">
+							</div>
+							<div class="description">
+								<h3>EOS 450D Camera</h3>
+								<p>Lorem ipsum dolor sit amet, conse adipiscing elit, sed diam nonu mrny mod tincidunt ut lao dolore</p>
+							</div>
+							<div class="view_prod">
+								<a class="hightlight" href="javascript:void(0)">View the Product></a>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
