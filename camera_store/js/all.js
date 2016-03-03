@@ -1,5 +1,9 @@
 $(document).ready(function(){
 
+
+	$('.select1').niceSelect();
+	//$('select').niceSelect();
+
 	initScrollTop();
 	initBannerSlider();
 	

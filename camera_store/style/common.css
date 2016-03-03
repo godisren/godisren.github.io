@@ -101,23 +101,12 @@ input[type='button']:hover{
 	left: 0;
 	
 }
-.config li{
-	margin-right: 30px;
+
+.config_item{
+ 	display:inline;
+ 	margin-right: 30px;
 	color:#a0a0a0;
 }
-.config select{	
-	border: 0 !important;
-  	-webkit-appearance: none;        /*Removes default chrome and safari style*/
-    -moz-appearance: none;          /* Removes Default Firefox style*/
-	background:url(../images/down_arrow.png) no-repeat;
-	
-	background-position: 50px 7px;
-	width: 70px;
-	color:#98b827;
-	text-indent: 0.01px;
- 	text-overflow: "";
-}
-
 .user_profile{
 	position: absolute;
 	right: 0;
@@ -318,8 +307,8 @@ input[type='button']:hover{
 
 .view_prod{
 	border-top: 1px solid #e7e7e7;
-	height:51px;
-	padding-top: 22px;
+	padding-top: 12px;
+	padding-left: 22px;
 }
 .brand{
 	clear:both;	
@@ -345,7 +334,7 @@ input[type='button']:hover{
 	border-top: 1px solid #e1e1e1; 
 	clear: both;
 	position: relative;	
-	height: 338px;
+	height: 270px;
 	background-color: white;
 	padding:20px 0px;
 
