@@ -180,14 +180,15 @@ input[type='button']:hover{
     padding-right: 30px;
 }
 .menu ul li a {
-    display:table-cell;
-    vertical-align: middle;
-    height:72px;
+    display:inline-block;
+    height: 42px;
+    padding-top: 30px;
 }
 .menu ul li a:hover{
 	text-decoration: none;
 	color:red;
 }
+
 .menu input{
 	position: absolute;
 	right:0px;
