@@ -444,6 +444,134 @@ input[type='button']:hover{
 	top:0;
 }
 
+@media only screen and (min-width: 451px) and (max-width: 900px) {
+	
+	.wrap {
+		width: 90%;        
+    }
+    .topbar{
+    	height:auto;
+    }
+    .config{
+    	clear:both;
+    	position: static;
+    }
+    .user_profile {
+    	clear:both;
+	    position: static;
+	}
+	.user_profile li{
+		margin: 0;
+		margin-right: 10px;
+	}
+	.header {
+    	position: static;
+	    height: auto;
+	    line-height:0;
+	    margin-bottom: 20px;
+	}
+	.logo{
+		position: static;
+	}
+	.logo a{
+		margin: 20px 0;
+	}
+	.social{
+		position: static;
+	}
+	.header2{
+		margin-bottom: 20px;
+	}
+	.header2 input {
+		position: static;
+		margin-bottom: 10px;
+	}
+	.menu ul li a{
+		height: auto;		
+		padding-top: 10px;
+	}
+	.info_more {
+		height: auto;
+		margin-bottom: 30px;
+	}
+
+	.prod_list {
+	    margin-bottom: 30px;
+	}
+	.product_card{
+		width:22%;
+		margin:10px 1%;
+	}	
+	.choice{
+		margin:auto;
+		margin-left:17px;
+		margin-bottom:10px;
+		height: auto;
+
+	}
+	.choice span{
+		position: static;
+	}
+	.choice input{
+		position: static;
+	}
+	
+	.description{
+		height:auto;
+		padding:5px 14px;		
+	}
+	.view_prod{
+		padding:5px 14px;
+	}
+	.brand {
+	    margin-bottom: 30px;
+	}
+	.brand-icon li {
+		width: 180px;
+	}
+
+	.footer{
+		height:100%;
+		overflow: auto;
+	}
+	.footer h3{
+		margin-bottom: 10px;
+	}
+	.follow_us, .recent_post,.contact, .people_say{
+		display: :inline-block;
+		width:auto;
+		position: relative;
+		margin-right: 20px;
+		margin-bottom:20px;
+	}	
+	.people{
+		width: 300px;
+    	margin: 0 10%;
+    	text-align: left;
+	}
+	.people_say {
+	    float: left;
+	}
+	.bottom_bar{
+		padding-top:0;
+		padding-bottom: 10px;
+		height: auto;
+		text-align: center;
+	}
+	.bottom_bar p{
+		position:relative;
+	}
+	.bottom_bar ul{
+		margin-top: 10px;
+		margin-bottom: 10px;
+		text-align: center;
+	}
+	.bottom_bar li{
+		margin: 5px;
+	}
+}
+
+
 @media only screen and (max-width: 450px) {
 	.wrap {
 		width: 90%;
