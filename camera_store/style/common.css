@@ -444,11 +444,10 @@ input[type='button']:hover{
 	top:0;
 }
 
-
 @media only screen and (max-width: 450px) {
 	.wrap {
-		/*background-color: red;*/
-        width: 400px;
+		width: 90%;
+        min-width:400px;
     }
     .user_profile,.social,.cart,.info_more,.brand{
     	display:none;
@@ -532,16 +531,9 @@ input[type='button']:hover{
 		border-radius: 2px;
 		border: 1px solid #e7e7e7;
 		background-color: white;
-		/*margin-right: 10px;*/
-		height:418px;
-		width:90%;
-		/*padding-top: 5px;*/
-		margin:5px 5%;
-
+		margin:5px 5% 10px;
 		height:auto;
-		/*width:300px;*/
 		width:90%;
-		margin-bottom:10px;
 	}
 	.choice{
 		margin:auto;
