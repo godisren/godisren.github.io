@@ -444,7 +444,7 @@ input[type='button']:hover{
 	top:0;
 }
 
-@media only screen and (min-width: 451px) and (max-width: 900px) {
+@media only screen and (min-width: 500px) and (max-width: 900px) {
 	
 	.wrap {
 		width: 90%;        
@@ -499,7 +499,7 @@ input[type='button']:hover{
 	    margin-bottom: 30px;
 	}
 	.product_card{
-		width:22%;
+		width:44%;
 		margin:10px 1%;
 	}	
 	.choice{
@@ -572,10 +572,10 @@ input[type='button']:hover{
 }
 
 
-@media only screen and (max-width: 450px) {
+@media only screen and (max-width: 500px) {
 	.wrap {
 		width: 90%;
-        min-width:400px;
+        min-width:300px;
     }
     .user_profile,.social,.cart,.info_more,.brand{
     	display:none;
@@ -619,6 +619,7 @@ input[type='button']:hover{
     .menu{
 		display:block;
 		margin-top:10px;
+		text-align: center;
 	}
 	.menu ul{
 		display: inline;
@@ -626,15 +627,16 @@ input[type='button']:hover{
 	.menu li {
 		display: inline-block;
 		width:160px;
-	    padding: 10px;
+	    padding: 0;
 	    margin-left:10px;
 	    margin-bottom:10px;
 	    border: 1px solid #e1e1e1;
 	    text-align: center;
 	}
 	.menu ul li a {
-	    display:inline-block;
-	    padding:0;
+		display:block;
+	    /*display:inline-block;*/
+	    padding:10px;
 	    height: 100%;
 	}
 	.menu ul li a:hover{
@@ -732,5 +734,19 @@ input[type='button']:hover{
 	.bottom_bar li{
 		margin: 5px;
 	}
-	
+}
+
+@media only screen and (max-width: 440px) {
+	.people div{
+		position: relative;
+		margin-bottom: 10px;
+	}
+
+	.post {
+	    margin: 0 5%;
+	}
+
+	.menu li {
+    	width: 90%;
+	}
 }
