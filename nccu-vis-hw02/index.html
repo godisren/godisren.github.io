@@ -1,0 +1,331 @@
+<!doctype html>
+<html>
+<head>
+    <style>
+        body {
+            background:#deeaee;
+            width: 1000px;
+            height: 720px;
+            margin: auto;
+            font-family: "Helvetica", "Arial","LiHei Pro","黑體-繁","微軟正黑體", sans-serif;
+        }
+
+        .bar {
+            fill: steelblue;
+        }
+
+        .paragraph{
+            padding-left: 3em;
+        }
+
+        ul li::marker {
+            font-size: 2em;
+        }
+        ul li{
+            padding: 0.2em;
+        }
+
+        .leftColumn {
+            float: left;
+            width: 70%;
+            margin: auto;
+        }
+
+        .rightColumn {
+            float: left;
+            width: 30%;
+        }
+
+        /* Clear floats after the columns */
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        .year_slider{
+            display: inline-block;
+            margin: 0 auto;
+            padding: 3px;
+            padding-left: 100px;
+        }
+
+        div.tooltip {	
+            position: absolute;			
+            text-align: center;			
+            padding: 10px;	
+            font: 12px sans-serif;		
+            background: black;	
+            color:white;
+            border: 0px;		
+            border-radius: 8px;			
+        }
+
+        ul.city{
+            border:solid;
+            border-radius: 8px;
+        }
+    </style>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+</head>
+<body>
+    <div style="text-align: center;">
+        <h1>六都家庭收入與支出比較圖</h1>
+    </div>
+    <div class="row">
+        <div class="leftColumn">
+            <div class="year_slider">
+                年度選擇
+                <input type="range" min=2017 max=2019 step=1 id="year" value=2019 oninput="selected_year.value = year.value">
+                <output name="selected_year" id="selected_year">2019</output>
+            </div>
+            <div id="my_chart" width="600" height="500">
+                
+             </div>
+        </div>
+        <div class="rightColumn">
+            <ul class="city">
+                <li style="color:#d98880"><span style="color:black">新 北 市</span></li>
+                <li style="color:#d2b4de"><span style="color:black">臺 北 市</span></li>
+                <li style="color:#5dade2"><span style="color:black">桃 園 市</span></li>
+                <li style="color:#FFC300"><span style="color:black">臺 中 市</span></li>
+                <li style="color:#FF5733"><span style="color:black">臺 南 市</span></li>
+                <li style="color:#b2babb"><span style="color:black">高 雄 市</span></li>
+            </ul>
+        </div>
+    </div> 
+    <div class="paragraph">
+        設計說明：<br>
+        我們的目標是希望透過圖表，可以看出以城市作為分類，何者家庭平均所入的高低及支出比較，
+        透過作座點的大小也可以觀察出城市人口大小的比較，另外，也可以透過年度選擇的調整，切換不同年度資料
+        ，最後，根據洞察結果會發現，雖然有些城市家庭收入相對高，但支出較少，
+        籍此可以簡略解釋城市間的消費及儲蓄能力(比如，2019年，桃園市收入比高雄市高，但支出卻相近，顯見桃園的儲蓄金額較高)。
+        <br>
+        <br>
+        設計選擇：<br>
+        Marks : Points <br>
+        Channels : <br>
+        - Slide : 統計年度，為分類屬性(Categorical attribute)<br>
+        - Point Size : 表示人口大小，使用log作encode，否則點大小會差量甚大，為量化屬性(Quantitative attribute)<br>
+        - Color : 表示不同城市，為分類屬性(Categorical attribute)<br>
+        - Horizontal Spatial Position : 表示家戶的所得總計，為量化屬性(Quantitative attribute)<br>
+        - Vertical Spatial Position: 表示家戶的支出，為量化屬性(Quantitative attribute)<br>
+        
+        <br>
+        經驗法則：
+        <ul>
+            <li>2D : 使用2D呈現對於空間相對位置的比較是更直覺的</li>
+            <li>Human Attention Limits : 實際上的資料集包含了所有台灣縣市，但如果將所資料呈現出來，反而增加cognitive load，所以只選六都</li>
+            <li>Overview First : 在不拖拉畫面及操控功能選項前，可以第一時間看到城市間的相對關係</li>
+            <li>Filter : 可以透過選擇年度查詢不同資料集</li>
+            <li>Details on Demand : 將游標移到點上，可以看到detail的資訊(實際戶數大小)</li>
+        </ul>
+        <br>
+        資料來源：<a href="https://www.stat.gov.tw/ct.asp?xItem=27900&ctNode=511&mp=4">中華民國統計資訊網 - 平均每戶家庭收支按區域別分</a><br>
+      </div>
+
+<script>
+    var data = {};
+
+    // set the dimensions and margins of the graph
+    var margin = {top: 30, right: 70, bottom: 100, left: 100},
+        width = 600 - margin.left - margin.right,
+        height = 400 - margin.top - margin.bottom;
+        
+
+    // append the svg object to the body of the page
+    var svg = d3.select("#my_chart")
+    .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+        .attr("transform",
+            "translate(" + margin.left + "," + margin.top + ")");
+
+    d3.queue()
+        .defer(d3.csv, '2019.csv')
+        .defer(d3.csv, '2018.csv')
+        .defer(d3.csv, '2017.csv')
+        .await(function(error, d2019, d2018, d2017) {
+            data['2019'] = formatData(d2019);
+            data['2018'] = formatData(d2018);
+            data['2017'] = formatData(d2017);
+            drawFirst('2019');
+        });
+
+    var slider = d3.select('#year');
+        slider.on('change', function() {
+            draw(this.value);
+    });
+
+    function formatData(year_data){
+        year_data.forEach(function(d) {
+            d["城市"] = d["城市"];
+            d["所得收入總計"] = parseInt(d["所得收入總計"]);
+            d["消費支出"] = parseInt(d["消費支出"]);
+            d["家庭戶數"] = parseInt(d["家庭戶數"]);
+        });
+
+        return year_data;
+    }
+
+    dotSVG = {}
+
+    // Color scale: give me a specie name, I return a color
+    var color = d3.scaleOrdinal()
+            .domain(["新 北 市", "臺 北 市", "桃 園 市","臺 中 市","臺 南 市","高 雄 市"])
+            .range([ "#d98880", "#d2b4de", "#5dade2", " #FFC300", " #FF5733 ", "#b2babb"])
+
+    // text label for the y axis
+    svg.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 0 - margin.left)
+        .attr("x",0 - (height / 2))
+        .attr("dy", "2em")
+        .style("text-anchor", "middle")
+        .text("消費支出 (元)");  
+
+    // text label for the x axis
+    svg.append("text")             
+        .attr("transform",
+                "translate(" + (width/2) + " ," + 
+                            (height +  70) + ")")
+        .style("text-anchor", "middle")
+        .text("所得收入總計 (元)");
+
+    var tooltip = d3.select("body").append("div")	
+        .attr("class", "tooltip")				
+        .style("opacity", 0);
+
+        var circleMouseOver = function(d){
+        
+        tooltip.transition()		
+            .duration(200)		
+            .style("opacity", .9);		
+
+        tooltip
+            .html("城市:"+ d["城市"]  
+            + "<br>家庭戶數:"+ d["家庭戶數"]
+             + "<br>所得收入總計:" + d["所得收入總計"] 
+            + "<br>消費支出:" + d["消費支出"])
+            .style("left", (d3.event.pageX - 50) + "px")		
+            .style("top", (d3.event.pageY - 100) + "px");
+        console.log('close tip');
+        d3.select(this).transition()
+            .attr('opacity', '.6');
+
+    }
+
+    var circleMouseOut = function(d){
+
+        tooltip.transition()		
+            .duration(100)		
+            .style("opacity", 0);	
+
+        d3.select(this).transition()
+            .attr('opacity', '1');
+    }
+
+
+    function drawFirst(year) {
+        var csv_data = data[year];
+        console.log('csv_data', csv_data);
+
+        // Add X axis
+        var x = d3.scaleLinear()
+            .domain([d3.min(csv_data, function(d) { return d["所得收入總計"]; })-100000, d3.max(csv_data, function(d) { return d["所得收入總計"]; })])
+            .range([ 0, width ])
+            .nice();
+        svg.append("g")
+            .attr("id", "x-axis")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom(x))
+            .selectAll("text")
+            .attr("y", 0)
+            .attr("x", 30)
+            .attr("transform", "rotate(40)");
+
+        // Add Y axis
+        var y = d3.scaleLinear()
+            .domain([d3.min(csv_data, function(d) { return d["消費支出"]; })-30000, d3.max(csv_data, function(d) { return d["消費支出"]; })])
+            .range([ height, 0])
+            .nice();
+        svg.append("g")
+            .attr("id", "y-axis")
+            .call(d3.axisLeft(y))
+            .append("text")        // append y axis label
+            .attr("transform", "rotate(-90)")   
+            .attr("y",-50)
+            .attr("x", -60)
+            .attr("text-anchor", "end")
+            .attr("fill", "black")
+            .attr("font-size", "24px");
+
+        // popularity (scaleLog to avoid large different)
+        // var popularity = d3.scaleLog()
+        var popularity = d3.scaleLinear()
+            .domain([d3.min(csv_data, function(d) { return d["家庭戶數"]; }), d3.max(csv_data, function(d) { return d["家庭戶數"]; })])
+            .range([ 0, 30])
+            .nice();
+
+        // Add dots
+        svg.append('g')
+            .selectAll("circle")
+            .data(csv_data)
+            .enter()
+            .append("circle")
+            .attr("cx", function (d) { return x(d["所得收入總計"]); } )
+            .attr("cy", function (d) { return y(d["消費支出"]); } )
+            .attr("r", function (d) { return popularity(d["家庭戶數"]); })
+            .style("fill", function (d) { return color(d["城市"]) } )
+            .on("mouseover", circleMouseOver)
+            .on("mouseout", circleMouseOut);
+    }
+
+    function draw(year) {
+        var csv_data = data[year];
+       
+        // Update X axis
+        var x = d3.scaleLinear()
+            .domain([d3.min(csv_data, function(d) { return d["所得收入總計"]; })-100000, d3.max(csv_data, function(d) { return d["所得收入總計"]; })])
+            .range([ 0, width ])
+            .nice();
+        d3.select("#x-axis").transition()
+            .call(d3.axisBottom(x))
+            .selectAll("text")
+            .attr("y", 0)
+            .attr("x", 30)
+            .attr("transform", "rotate(40)");
+
+        // Update Y axis
+        var y = d3.scaleLinear()
+            .domain([d3.min(csv_data, function(d) { return d["消費支出"]; })-30000, d3.max(csv_data, function(d) { return d["消費支出"]; })])
+            .range([ height, 0])
+            .nice();
+        d3.select("#y-axis").transition()
+            .call(d3.axisLeft(y))
+
+        // popularity (scaleLog to avoid large different)
+        // var popularity = d3.scaleLog()
+        var popularity = d3.scaleLinear()
+            .domain([d3.min(csv_data, function(d) { return d["家庭戶數"]; }), d3.max(csv_data, function(d) { return d["家庭戶數"]; })])
+            .range([ 0, 30])
+            .nice();
+
+        // Update dots
+        svg.selectAll("circle")
+            .data(csv_data)
+            .transition()
+            .attr("cx", function (d) { return x(d["所得收入總計"]); } )
+            .attr("cy", function (d) { return y(d["消費支出"]); } )
+            .attr("r", function (d) { return popularity(d["家庭戶數"]); })
+            .style("fill", function (d) { return color(d["城市"]) } )
+            .on("mouseover", circleMouseOver)
+            .on("mouseout", circleMouseOut);
+
+    }
+
+</script>
+
+</body>
+</html>

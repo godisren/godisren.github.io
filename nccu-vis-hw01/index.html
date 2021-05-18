@@ -1,0 +1,151 @@
+<!doctype html>
+<html>
+<head>
+    <style>
+        body {
+            background:#deeaee;
+            width: 1000px;
+            height: 720px;
+            margin: auto;
+            font-family: "Helvetica", "Arial","LiHei Pro","黑體-繁","微軟正黑體", sans-serif;
+        }
+
+        .bar {
+            fill: steelblue;
+        }
+
+        .paragraph{
+            padding-left: 3em;
+        }
+
+    </style>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+</head>
+<body>
+<div>
+    <svg width="1000" height="500"></svg>
+    <DIV class="paragraph">
+        圖為比特幣區塊鏈中，前十大擁有最多區塊鏈節點數的國家，以使用者最關心的資料屬性呈現：
+        <ul>
+            <ol>1. 以排名順序呈現。</ol>
+            <ol>2. 顯示具體的節點數。</ol>
+            <ol>3. 以國旗搭配直條圖，效果會比國名來的強烈有印象。</ol>
+        </ul>
+        網頁設計以柔合色調呈現，且以置中方式配置，在第一時間開啟圖表時，可以以最節潔有力的方式供使用者觀察。<br>
+        Y軸刻度：表示節點數，因為數值範為約從200~2000，故每一間隔以100為單位呈現為佳。<br>
+        X軸刻度：表示國家，這邊呈現前十大區塊節點國家。<br>
+        資料來源：https://bitnodes.io/<br>
+      </DIV>
+</div>
+<script>
+    var svg = d3.select("svg"),
+                margin = 200,
+                width = svg.attr("width") - margin,
+                height = svg.attr("height") - margin
+
+    var xScale = d3.scaleBand().range([0, width]).padding(0.4),
+        yScale = d3.scaleLinear().range([height, 0]);
+
+    var g = svg.append("g")
+                .attr("transform", "translate(" + 100 + "," + 100 + ")");
+
+    // d3.csv("XYZ.csv", function(error, data) {
+    d3.csv("bitcoin_nodes.csv?t=1", function(error, data) {
+        if (error) {
+            throw error;
+        }
+
+        data.forEach(function(d) {
+            d.COUNTRY = d.COUNTRY;
+            d.NODES = parseInt(d.NODES);
+        });
+
+        max_value = d3.max(data, function(d) { return d.NODES; });
+        min_value = 0 ; //d3.min(data, function(d) { return d.NODES; });
+
+        xScale.domain(data.map(function(d) { return d.COUNTRY; }));
+        yScale.domain([min_value, max_value]);
+
+        // draw x axis
+        g.append("g")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom(xScale))
+            .append("text")        // append x axis label
+            .attr("y", height - 250)
+            .attr("x", width/2)
+            .attr("fill", "black")
+            .attr("font-size", "24px")
+            .text("Country");
+
+        // draw y axis
+        g.append("g")
+            .call(d3.axisLeft(yScale).tickFormat(function(d){
+                return d;
+            }).ticks(10))
+            .append("text")        // append y axis label
+            .attr("transform", "rotate(-90)")   
+            .attr("y",-50)
+            .attr("x", -60)
+            .attr("text-anchor", "end")
+            .attr("fill", "black")
+            .attr("font-size", "24px")
+            .text("Number of Nodes");
+
+        
+        // create a bar group elements
+        bars = g.selectAll(".bar")
+                .data(data)
+                .enter()
+                .append("g");
+
+        // draw bar
+        bars.append("rect")
+            .attr("class", "bar")
+            .attr("x", function(d) { return xScale(d.COUNTRY); })
+            .attr("y", function(d) { return yScale(d.NODES); })
+            .attr("width", xScale.bandwidth())
+            .attr("height", function(d) { return height - yScale(d.NODES); });
+
+        // draw bar number text
+        bars.append("text")
+            .text(function(d) { 
+                console.log('show text', d.NODES)
+                return d.NODES;
+            })
+            .attr("x", function(d){
+                return xScale(d.COUNTRY) + 35 ;
+            })
+            .attr("y", function(d){
+                return yScale(d.NODES) +20 ;
+            })
+            .attr("text-anchor", "end")
+            .attr("fill","white");
+
+        // draw country flag
+        bars.append("svg:image")
+            .attr("xlink:href",function(d) { 
+                if (!d.COUNTRY_CODE){
+                    // if country code not found, show ? pic
+                    return "https://d1nhio0ox7pgb.cloudfront.net/_img/o_collection_png/green_dark_grey/32x32/plain/symbol_questionmark.png"
+                }
+
+                return "https://www.countryflags.io/"+d.COUNTRY_CODE+"/flat/32.png";
+            })
+            .attr("x", function(d){
+                return xScale(d.COUNTRY) + 5 ;
+            })
+            .attr("y", function(d){
+                return yScale(d.NODES) - 35 ;
+            });
+
+        // Subject
+        svg.append("text")
+            .attr("transform", "translate(100,0)")
+            .attr("x", 300)
+            .attr("y", 50)
+            .attr("font-size", "24px")
+            .text("Top 10 countries with Bitcoin Nodes")
+    });
+</script>
+</body>
+</html>

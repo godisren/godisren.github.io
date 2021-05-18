@@ -1,0 +1,804 @@
+<!doctype html>
+<html>
+<head>
+    <style>
+        body {
+            background:#deeaee;
+            width: 1000px;
+            height: 720px;
+            margin: auto;
+            font-family: "Helvetica", "Arial","LiHei Pro","黑體-繁","微軟正黑體", sans-serif;
+            margin-top: 40px;
+            margin-bottom: 40px;
+        }
+
+        .bar {
+            fill: steelblue;
+        }
+
+        .paragraph{
+            padding-left: 3em;
+            max-width: 700px;
+        }
+
+        ul li::marker {
+            font-size: 2em;
+        }
+        ul li{
+            padding: 0.2em;
+        }
+
+        ul li.low_li{
+            color :rgb(44, 160, 44);
+        }
+
+        ul li.high_li{
+            color :rgb(76, 64, 130);
+        }
+
+        ul li.avg_li{
+            color :rgb(201, 50, 50);
+        }
+
+        .leftColumn {
+            float: left;
+            width: 70%;
+            margin: auto;
+        }
+
+        .rightColumn {
+            float: left;
+            width: 30%;
+        }
+
+        div.tooltip {	
+            position: absolute;			
+            text-align: center;			
+            padding: 10px;	
+            font: 12px sans-serif;		
+            background: black;	
+            color:white;
+            border: 0px;		
+            border-radius: 8px;			
+        }
+
+        /* Clear floats after the columns */
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        ul.city{
+            border:solid;
+            border-radius: 8px;
+        }
+
+
+        /*** mirro bar ***/
+        .chart {
+            padding-top: 10px;
+            width: 100%;
+        }
+
+        .chart .right {
+            stroke: rgba(0, 0, 0, .3);
+            fill: rgb(44, 160, 44);;
+        }
+
+        .chart .left {
+            stroke: rgba(0, 0, 0, .3);
+            fill: rgb(214, 39, 40);;
+        }
+
+        .chart rect:hover {
+            fill: #aaa;
+        }
+
+        .axis path,
+        .axis line {
+            fill: none;
+            stroke: black;
+            shape-rendering: crispEdges;
+        }
+
+        .axis text {
+            font-family: sans-serif;
+            font-size: 11px;
+        }
+
+        /*** tooltip3 ***/
+        div.tooltip3 {	
+            position: absolute;			
+            text-align: center;			
+            padding: 10px;	
+            font: 12px sans-serif;		
+            background: black;	
+            color:white;
+            border: 0px;		
+            border-radius: 8px;			
+        }
+
+    </style>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+</head>
+<body>
+
+    <div>
+        <h1>1,606家上市櫃企業員工薪資全揭露！誰給最大方？高薪企業20強一次看</h1>
+        新聞來源：<a href="https://www.bnext.com.tw/article/57937/tes-company-salary-rank">
+            數位時代新聞</a> <br>
+        組別編號：5<br>
+        組員：張天慈、黃仁志、任裕民 <br>
+        我們以下圖表都遵守：
+        <ul>
+            <li>2D : 使用2D呈現對於空間相對位置的比較是更直覺的</li>
+            <li>Overview First : 在不拖拉畫面及操控功能選項前，可以第一時間看到重要資訊內容</li>
+            <li>Details on Demand : 將游標移到點上，可以看到detail的資訊</li>
+        </ul>
+        
+    </div>
+
+    <div style="text-align: center;">
+        <h2>圖一、上市櫃企業高薪 TOP20</h2>
+    </div>
+    <div class="row">
+        <div class="leftColumn">
+            <div id="company_chart" width="600" height="500">
+             </div>
+        </div>
+        <div class="rightColumn">
+            產業類別統計(以顏色區塊表示相同產業)<br>
+            <div>
+                <svg id="company_category" height="300"></svg>
+            </div>
+        </div>
+    </div> 
+    <div class="paragraph">
+        設計說明：首先，我們與原始圖表一(列於頁尾處)作比較，原圖表單純使用表格方式呈現前20的排名公司，
+        以員工平均年薪由高至低排序，每列描述各公司的細節，例如，公司名稱、產業、人數等。<br><br>
+        以下為我們改進的重點：
+        <ul>
+            <li>由於原圖表只能在第一時間呈現公司排名的資訊，故我們將它以長條圖呈現，不但保持排序的資訊，
+                同時也很容易可以比較各公司間的差距。</li>
+            <li>因為公司數量眾多，我們以產業作為分類並標示色彩，這邊我們使用d3.schemeCategory10，
+                好處是這個色彩分類器對人們是有明顯的區別性，易於分辨。</li>
+            <li>增加互動性一，仍保留公司細節資訊，當滑鼠移至(mouseover)長條圖，將有tooltip顯示公司資訊。</li>
+            <li>增加互動性二，當滑鼠點擊(click)長條圖，只顯示相同產業長條圖，更容易辦識相同產業的分佈狀況。</li>
+            <li>右上方提供歸納產業的資訊，以產業別說明進入TOP20的企業數量。</li>
+        </ul>
+        基本圖表說明：y軸為員工平均年薪，以萬元為單位；x軸為公司名稱；長條圖的高度表示公司的平均年薪，而排名(no)列於長修上。
+    </div>
+    <br>
+<script>
+
+    const currency = function(number){
+        return new Intl.NumberFormat('en-TW', {style: 'currency',currency: 'NTD', minimumFractionDigits: 0}).format(number);
+    };
+
+    var data = {};
+
+    // set the dimensions and margins of the graph
+    var margin = {top: 30, right: 70, bottom: 100, left: 100},
+        width = 1000 - margin.left - margin.right,
+        height = 600 - margin.top - margin.bottom;
+
+    // append the svg object to the body of the page
+    var svg = d3.select("#company_chart")
+        .append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+            .attr("transform",
+                "translate(" + margin.left + "," + margin.top + ")");
+
+    // text label for the y axis
+    svg.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 0 - margin.left)
+        .attr("x",0 - (height / 2))
+        .attr("dy", "2em")
+        .style("text-anchor", "middle")
+        .text("員工平均年薪 (萬元)");  
+
+    // text label for the x axis
+    svg.append("text")             
+        .attr("transform",
+                "translate(" + (width/2) + " ," + 
+                            (height +  70) + ")")
+        .style("text-anchor", "middle")
+        .text("公司名稱");
+
+    d3.csv("company_avg_salary.csv", function(error, data) {
+        if (error) {
+            throw error;
+        }
+
+        console.log(data);
+
+        data.forEach(function(d) {
+            d["排名"] = parseInt(d["排名"]);
+            d["薪資費用總支出"] = parseInt(d["薪資費用總支出"]);
+            d["員工人數"] = parseInt(d["員工人數"]);
+            d["員工平均年薪"] = parseInt(d["員工平均年薪"]);
+        });
+
+        // Add X axis
+        var x = d3.scaleBand()
+            .domain(data.map(function(d) { return d["企業"]; }))
+            .range([ 0, width ])
+            .padding(0.4);
+        svg.append("g")
+            .attr("id", "x-axis")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom(x))
+            .selectAll("text");
+
+        // Add Y axis
+        var y = d3.scaleLinear()
+            .domain([d3.min(data, function(d) { return d["員工平均年薪"]; }), d3.max(data, function(d) { return d["員工平均年薪"]; })])
+            .range([ height, 0])
+            .nice();
+        svg.append("g")
+            .attr("id", "y-axis")
+            .call(d3.axisLeft(y))
+            .append("text")        // append y axis label
+            .attr("transform", "rotate(-90)")   
+            .attr("y",-50)
+            .attr("x", -60)
+            .attr("text-anchor", "end")
+            .attr("fill", "black")
+            .attr("font-size", "24px");
+
+        // category color
+        var color = d3.scaleOrdinal(d3.schemeCategory10 );
+        var x_color = d3.scaleOrdinal()
+            .domain(data.map(function(d) { return d["產業類別"]; }))
+            .range(d3.schemeCategory10);
+
+        // create a bar group elements
+        bars = svg.selectAll(".bar")
+                .data(data)
+                .enter()
+                .append("g");
+        // draw bar
+        bars.append("rect")
+            .attr("class", "bar")
+            .attr("x", function(d) { return x(d["企業"]); })
+            // TODO transition (bottom up)
+            .attr("y", function(d) { return y(d["員工平均年薪"]); })
+            .attr("width", x.bandwidth())
+            .attr("height", function(d) { return height - y(d["員工平均年薪"]); })
+            .style("fill", function(d) { return x_color(d["產業類別"]); })
+            .on("mouseover", function(d){
+                tooltip.html("排名 : "+d['排名']+"<br>"
+                    +"企業 : "+d['企業']+"<br>"
+                    +"代號 : "+d['代號']+"<br>"
+                    +"產業 : "+d['產業類別']+"<br>"
+                    +"薪資費用總支出 : "+currency(d['薪資費用總支出'])+" 萬<br>"
+                    +"員工人數 : "+d['員工人數']+"<br>"
+                    +"平均年薪 : "+currency(d['員工平均年薪']) + " 萬")
+                    .style("left","700px")
+                    .style("top","450px")
+                    .style("opacity",1.0);
+
+            })
+            .on("mouseout", function(d){
+                tooltip.style("opacity",0);
+            })
+            .on("mousedown", function(d){
+                svg
+                .selectAll('.bar,.bartext')
+                    .filter(function(other_d, i) {
+                        return d['產業類別'] != other_d['產業類別'];
+                        // return i != current_idx
+                    })
+                    .style("opacity", 0);
+            });
+
+        bars.append("text")
+            .attr("class", "bartext")
+            .attr("x", function(d) { return x(d["企業"]); })
+            .attr("y", function(d) { return y(d["員工平均年薪"]); })
+            .attr("height", function(d) { return height - y(d["員工平均年薪"]); })
+            .attr("dx", "0.8em")
+            .attr("dy", "-0.5em")
+            .attr("font-size", "11px")
+            .style("text-anchor", "middle")
+            .text(function(d) { return "No."+d["排名"]; } );  
+
+        // put mouseup outside the bar, otherwise the cursor move out of bar, it won't work
+        d3.select("body").on("mouseup", function(d){
+            svg.selectAll('.bar,.bartext').style("opacity", 1);
+        })
+            
+        var tooltip = d3.select("#company_chart").append("div")	
+            .attr("class", "tooltip")	
+            .style("text-align","left")	
+            .style("opacity", 0);
+
+
+        // draw the category legend
+        categoryMap = new Map
+        data.forEach(function(d) {
+            var key = d["產業類別"];
+            if (categoryMap.get(key) == null){
+                categoryMap.set(key, 0);
+            }
+
+            categoryMap.set(key, categoryMap.get(key)+1);
+        });
+
+        categoryArray = []
+        categoryMap.forEach(function(value, key, map){
+            categoryArray.push({
+                "產業類別":key, 
+                "value":value
+            })
+        });
+
+        var legend = d3.select("#company_category")
+            .selectAll("myLegend")
+            .data(categoryArray)
+            .enter()
+            .append('g')
+            .attr("transform", function(d, i) { 
+                var diff = 10 + (i * 30);
+                return "translate(10," + diff + ")"; 
+            });
+
+        legend.append("rect")
+            .attr('width',15)
+            .attr('height',15)
+            .style("fill", function(d){ return x_color(d["產業類別"]) });
+
+        legend.append("text")
+            .attr("dx", "1.5em")
+            .attr("dy", ".9em")
+            .text(function(d) { return d["產業類別"] + " : " + d["value"] +" 間企業"; });
+
+    });
+
+</script>
+
+
+<!-- Create a div where the graph will take place -->
+
+<div style="text-align: center;">
+    <h2>圖二、各產業平均年薪比較圖-棒棒圖</h2>
+</div>
+<div class="row">
+    <div class="leftColumn">
+        排序選項：<select id="pic3_sel" style="height: 30px;">
+            <option value="avg">以產業平均年薪排序(高至低)</option>
+            <option value="low">以最低平均年薪排序(高至低)</option>
+            <option value="high">以最高平均年薪排序(高至低)</option>
+            <option value="diff">以最低及最高年薪差距排序(高至低)</option>
+        </select>
+        <div id="pic3_div"></div>
+    </div>
+    <div class="rightColumn">
+        <ul>
+            <li class="avg_li">產業平均年薪</li>
+            <li class="high_li">最高平均年薪</li>
+            <li class="low_li">最低平均年薪</li>
+        </ul>
+    </div>
+</div> 
+<div class="paragraph">
+    設計說明：這邊的圖表我們與原始圖表二(列於頁尾處)作比較，原圖表依然單純使用表格方式呈現各產業的平均薪資狀況，
+    以產業平均薪資由高至低排序，表中，列出該產業分別代表最低及最高的平均薪資的公司，對於使用者除了排名產業平均薪資外，
+    無法比較其他項目。
+    <br><br>
+    以下為我們改進的重點：
+    <ul>
+        <li>棒棒圖使我們可以將關心的數據點重點標示出來，這邊我們用三個點呈現產業平均、最低及最高的平均薪資。</li>
+        <li>增加互動性一，當我將滑鼠移至(mouserover)點上，依然可以看出其代表的薪資訊息</li>
+        <li>增加互動性二，提供re-order效果，讓我們可以根據產業平均、最低及最高的平均薪資排序</li>
+        <li>由於我們可以很容易計最高及最低差距，所以可以提供額外「最低及最高差距最大的產業」排序，這是原本沒有資訊</li>
+    </ul>
+    基本圖表說明：x軸為產業名稱；y軸為平均薪資，以萬元為單位；右上角說明在棒棒圖上的圓點意義。
+</div>
+
+<script>
+
+    // set the dimensions and margins of the graph
+    var pic3_margin = {top: 10, right: 30, bottom: 100, left: 100},
+        pic3_width = 650 - pic3_margin.left - pic3_margin.right,
+        pic3_height = 800 - pic3_margin.top - pic3_margin.bottom;
+    
+    // append the svg object to the body of the page
+    var lolipot_svg = d3.select("#pic3_div")
+      .append("svg")
+        .attr("width", pic3_width + pic3_margin.left + pic3_margin.right)
+        .attr("height", pic3_height + pic3_margin.top + pic3_margin.bottom)
+      .append("g")
+        .attr("transform",
+              "translate(" + pic3_margin.left + "," + pic3_margin.top + ")");
+
+    // text label for the y axis
+    lolipot_svg.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 0 - 80)
+        .attr("x",0 - (pic3_height / 2))
+        // .attr("dy", "2em")
+        .style("text-anchor", "middle")
+        .text("產業名稱");  
+
+    // text label for the x axis
+    lolipot_svg.append("text")             
+        .attr("transform",
+                "translate(" + (pic3_width/2) + " ," + 
+                            (pic3_height +  70) + ")")
+        .style("text-anchor", "middle")
+        .text("員工平均年薪 (萬元)");
+
+
+    var pic3_tooltip = d3.select("#pic3_div").append("div")	
+        .attr("class", "tooltip")				
+        .style("opacity", 0);
+
+    var highcircleMouseOver = function(d){
+        
+        pic3_tooltip.transition()		
+            .duration(200)		
+            .style("opacity", .9);		
+
+        pic3_tooltip
+            .html("最高平均年薪:"+ d["最高平均年薪"])
+            .style("left", (d3.event.pageX + 5) + "px")		
+            .style("top", (d3.event.pageY + 5) + "px");
+        console.log('close tip');
+        d3.select(this).transition()
+            .attr('opacity', '.6');
+
+    }
+
+    var lowcircleMouseOver = function(d){
+        
+        pic3_tooltip.transition()		
+            .duration(200)		
+            .style("opacity", .9);		
+
+        pic3_tooltip
+            .html("最低平均年薪:"+ d["最低平均年薪"])
+            .style("left", (d3.event.pageX + 5) + "px")		
+            .style("top", (d3.event.pageY + 5) + "px");
+        console.log('close tip');
+        d3.select(this).transition()
+            .attr('opacity', '.6');
+
+    }
+
+    var avgcircleMouseOver = function(d){
+        
+        pic3_tooltip.transition()		
+            .duration(200)		
+            .style("opacity", .9);		
+
+        pic3_tooltip
+            .html("最低平均年薪:"+ d["產業平均年薪"])
+            .style("left", (d3.event.pageX + 5) + "px")		
+            .style("top", (d3.event.pageY + 5) + "px");
+        console.log('close tip');
+        d3.select(this).transition()
+            .attr('opacity', '.6');
+
+    }
+
+    var circleMouseOut = function(d){
+
+        pic3_tooltip.transition()		
+            .duration(100)		
+            .style("opacity", 0);	
+
+        d3.select(this).transition()
+            .attr('opacity', '1');
+    }
+    
+    d3.csv("industry_avg_salary.csv", function(error, data) {
+        if (error) {
+            throw error;
+        }
+
+        data.forEach(function(d) {
+            d["排名"] = parseInt(d["排名"]);
+            d["最高平均年薪"] = parseInt(d["最高平均年薪"]);
+            d["最低平均年薪"] = parseInt(d["最低平均年薪"]);
+            d["產業平均年薪"] = parseInt(d["產業平均年薪"]);
+            
+        }); 
+
+
+        var pic3_x = d3.scaleLinear()
+        .domain([0, d3.max(data, (d) => d['最高平均年薪'])])
+        .range([ 0, pic3_width]);
+
+        var pic3_y = d3.scaleBand()
+            .domain(data.map(function(d) { return d['產業']; }))
+            .range([ 0, pic3_height ])
+            .padding(1);
+            
+    
+        const groups = lolipot_svg.selectAll('g')
+            .data(data).enter()
+            .append("g")
+            .attr("transform", function(d, i) {
+                        var dd =  pic3_y(d['產業']);
+                        return "translate(0,"+( dd )+")";
+                    });
+
+        d3.select("#pic3_sel").on("change",function(){
+
+            var selValue = d3.select(this).property('value');
+
+            data.sort(function(a, b) {
+                // return d3.descending(a['最高平均年薪'], b['最高平均年薪']);
+
+                if(selValue=="low"){
+                    return d3.descending(a['最低平均年薪'], b['最低平均年薪']);
+                }else if(selValue=="high"){
+                    return d3.descending(a['最高平均年薪'], b['最高平均年薪']);
+                }else if(selValue=="avg"){
+                    return d3.descending(a['產業平均年薪'], b['產業平均年薪']);
+                }else if(selValue=="diff"){
+                    return d3.descending(a['最高平均年薪']-a['最低平均年薪'], b['最高平均年薪']-b['最低平均年薪']);
+                }
+
+            })
+
+            pic3_y.domain(data.map(function(d) { return d['產業']; }))
+                .range([ 0, pic3_height ])
+                .padding(1);
+
+            groups.transition()
+                .delay(function(d, i) {
+                    return i * 50;  // gives it a smoother effect
+                })
+                .duration(1000)
+                .attr("transform", function(d, i) {
+                    var dd =  pic3_y(d['產業']);
+                    return "translate(0,"+( dd )+")";
+                });
+
+            d3.select("g.pic3_y").transition()
+                .delay(function(d, i) {
+                    return i * 50;  // gives it a smoother effect
+                })
+                .duration(1500)
+                .call(d3.axisLeft(pic3_y));
+        });
+
+        // Lines
+        groups.append("line")
+            .attr("x1", function(d) { return pic3_x(d['最低平均年薪']); })
+            .attr("x2", function(d) { return pic3_x(d['最高平均年薪']); })
+            .attr("stroke", "grey")
+            .attr("stroke-width", "1px");
+        
+        // Circles of variable 1
+        groups.append("circle")
+              .attr("cx", function(d) { return pic3_x(d['最低平均年薪']); })
+              .attr("r", "6")
+              .style("fill", "#69b3a2")
+              .on("mouseover", lowcircleMouseOver)
+              .on("mouseout", circleMouseOut);
+        
+        // Circles of variable 2
+        groups.append("circle")
+              .attr("cx", function(d) { return pic3_x(d['最高平均年薪']); })
+              .attr("r", "6")
+              .style("fill", "#4C4082")
+              .on("mouseover", highcircleMouseOver)
+              .on("mouseout", circleMouseOut);
+
+        // Circles of variable 3
+        groups.append("circle")
+              .attr("cx", function(d) { return pic3_x(d['產業平均年薪']); })
+              .attr("r", "6")
+              .style("fill", "rgb(201, 50, 50)")
+              .on("mouseover", avgcircleMouseOver)
+              .on("mouseout", circleMouseOut);
+
+
+        // Add X axis
+        lolipot_svg.append("g")
+            .attr("transform", "translate(0," + pic3_height + ")")
+            .call(d3.axisBottom(pic3_x));
+        
+        // Y axis
+        lolipot_svg.append("g")
+            .attr("class", "pic3_y")
+            .call(d3.axisLeft(pic3_y));
+
+});
+    
+</script>
+
+
+<div style="text-align: center;">
+    <h2>圖三、各產業平均年薪比較圖 (對稱長條圖)</h2>
+</div>
+<div class="row">
+    <div id="mirror_div">
+        <svg id="mirror_svg" style="background-color:#ffb72d; padding-bottom:20px"></svg>
+    </div>
+</div> 
+<div class="paragraph">
+    <br><br>
+    設計說明：這邊的原圖表也是原始圖表二(列於頁尾處)，與我們上一個圖表二的來源相同，我們希望以不同的實驗方式呈現不同的效果。
+    
+    <br><br>
+    以下為我們改進的重點：
+    <ul>
+        <li>以對稱長條圖表同時呈現出該產業最高及最低的平均新資，除了將數字具象化，也容易比較以其它產業的差距。</li>
+        <li>長條上列出最高及最低的公司名稱。</li>
+        <li>增加互動性，提供re-order效果，當滑鼠點擊(click)長條圖，則會依照該項目內容進行排序
+            ，若在點擊第二次，將會作反向排序，反之亦然，這個效果提供使用者比較他所關心的項目。</li>
+    </ul>
+    基本圖表說明：最上方分別標示其相對位置的項目說明，分別是「公司名稱(最低平均薪資)」、「產業」及「公司名稱(最高平均薪資)」；
+    左右y軸分別表示最低及最高的平均薪資，單位為萬元。<br>
+    此對稱長條圖中，似乎較適合用在呈現兩個屬性值的表現上，例如最高及最低薪資，但有困難將平均薪資(第三個屬性值)放進圖表中；
+    另外，對稱長條圖也較容易看出最高及最低的明顯差異，這個是棒棒圖比較沒辦法突顯的部份。
+</div>
+
+<script type="text/javascript">
+d3.csv("industry_avg_salary.csv", function(error, data) {
+    if (error) {
+        throw error;
+    }
+
+    console.log(data);
+
+    data.forEach(function(d) {
+        d["排名"] = parseInt(d["排名"]);
+        d["最高平均年薪"] = parseInt(d["最高平均年薪"]);
+        d["最低平均年薪"] = parseInt(d["最低平均年薪"]);
+        d["產業平均年薪"] = parseInt(d["產業平均年薪"]);
+        
+    }); 
+    
+    const w = 950, h = 800,
+        // LW = 300, RW = 300,
+        LW = 300, RW = 300,
+        PL = 100, PR = 100;
+    const barH = 18, R_START = 500, margin_top = 30;
+
+    const LScale = d3.scaleLinear().domain([0, d3.max(data, (d) => d['最低平均年薪'])]).rangeRound([0, 300]);
+    const RScale = d3.scaleLinear().domain([0, d3.max(data, (d) => d['最高平均年薪'])]).rangeRound([0, 300]);
+    
+    const mirror_svg = d3.select('#mirror_svg').classed('chart', true).attr('width', w).attr('height', h);
+
+    const groups = mirror_svg.selectAll('g')
+        .data(data).enter()
+        .append("g")
+        .attr("transform", function(d, i) {
+                    return "translate(0,"+( i * (h / data.length) + barH/2 + margin_top)+")";
+                });
+
+    var sort_by_higher = false;
+    var sort_by_lower = false;
+
+    var mirror_sort_by_higher = function(d) {
+        sort_by_higher = !sort_by_higher;
+        groups.sort(function(a, b) {
+                return sort_by_higher ? d3.ascending(a['最高平均年薪'], b['最高平均年薪']) 
+                                    : d3.ascending(b['最高平均年薪'], a['最高平均年薪']) ;
+            })
+            .transition()
+            .delay(function(d, i) {
+                return i * 50;  // gives it a smoother effect
+            })
+            .duration(1000)
+            .attr("transform", function(d, i) {
+                return "translate(0,"+( i * (h / data.length) + barH/2 + margin_top)+")";
+        });
+    }
+
+    var mirror_sort_by_lower = function(d) {
+        sort_by_lower = !sort_by_lower;
+        groups.sort(function(a, b) {
+                return sort_by_lower ? d3.ascending(a['最低平均年薪'], b['最低平均年薪']) 
+                                    : d3.ascending(b['最低平均年薪'], a['最低平均年薪']) ;
+            })
+            .transition()
+            .delay(function(d, i) {
+                return i * 50;  // gives it a smoother effect
+            })
+            .duration(1000)
+            .attr("transform", function(d, i) {
+                return "translate(0,"+( i * (h / data.length) + barH/2 + margin_top)+")";
+        });
+    }
+
+    groups.append('rect')
+        .classed('left', true)
+        .attr('width', (d) => RScale(d["最低平均年薪"]))
+        .attr('height', barH)
+        .attr('x', (d) => LW - RScale(d["最低平均年薪"]) + PL)
+        .on("click", mirror_sort_by_lower);
+
+    groups.append('rect')
+        .classed('right', true)
+        .attr('width', (d) => RScale(d["最高平均年薪"]))
+        .attr('height', barH)
+        .attr('x', (d) => R_START)
+        .on("click", mirror_sort_by_higher);
+
+    groups.append('text')
+        .attr('x', 425-10)
+        .text((d) => d['產業'])
+        .attr("dy", "1em");
+    groups.append('text')
+        .attr('x', LW -100)
+        .text((d) => d['最低平均年薪'])
+        .attr("dy", "1em");
+    groups.append('text')
+        .attr('x', LW -20)
+        .style('fill', 'white')
+        .text((d) => d['最低公司'])
+        .attr("dy", "1em")
+        .on("click", mirror_sort_by_lower);
+
+        
+    groups.append('text')
+        .attr('x', w-PR)
+        .text((d) => d['最高平均年薪'])
+        .attr("dy", "1em");
+    groups.append('text')
+        .attr('x', R_START+20)
+        .style('fill', 'white')
+        .text((d) => d['最高公司'])
+        .attr("dy", "1em")
+        .on("click", mirror_sort_by_higher);;
+    
+    // text label for the y axis
+    mirror_svg.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 130 )
+        .attr("x",0 - (h / 2) + 20)
+        .attr("dy", "2em")
+        .style("text-anchor", "middle")
+        .text("最低平均年薪 (萬元)");  
+
+    mirror_svg.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", w -50 )
+        .attr("x",0 - (h / 2))
+        .attr("dy", "2em")
+        .style("text-anchor", "middle")
+        .text("最高平均年薪 (萬元)");  
+
+    // text label for the x axis
+    mirror_svg.append("text")             
+        .attr("transform", "translate(" + (w/2 - 30) + " ," + 20 + ")")
+        .style("text-anchor", "middle")
+        .text("產業");
+
+    mirror_svg.append("text")             
+        .attr("transform", "translate(" + (LW) + " ," + 20 + ")")
+        .style("text-anchor", "middle")
+        .text("公司名稱(最低平均薪資)");
+
+    mirror_svg.append("text")             
+        .attr("transform", "translate(" + (w/2 +120) + " ," + 20 + ")")
+        .style("text-anchor", "middle")
+        .text("公司名稱(最高平均薪資)");
+
+});
+    
+</script>
+<br>
+<hr>
+<br>
+<div style="margin-bottom: 50px;">
+    <h3>原始圖表一</h3>
+    <img src="original_1.jpeg" width="500px">
+
+    <h3>原始圖表二</h3>
+    <img src="original_2.jpeg" width="500px">
+</div>
+
+
+</body>
+</html>
